@@ -2,7 +2,8 @@
 
 __revision__ = "$Rev$"
 
-from cStringIO import StringIO
+from io import StringIO
+
 try:
     from PIL import Image
 except ImportError:
@@ -26,9 +27,10 @@ class DataMatrixRenderer:
         # add the edge handles
         self.add_handles()
 
-    def put_cell(self, (posx, posy), colour=1):
+    def put_cell(self, position, colour=1):
         """Set the contents of the given cell"""
 
+        posx, posy = position
         self.matrix[posy][posx] = colour
 
     def add_handles(self):
@@ -96,15 +98,15 @@ class DataMatrixRenderer:
             """return pixel representation of a matrix value
             0 => white, 1 => black"""
             if value == 0:
-                return chr(255)
+                return b"\xff"
             elif value == 1:
-                return chr(0)
+                return b"\x00"
 
         # PIL writes image buffers from the bottom up,
         # so feed in the rows in reverse
-        buf = ""
+        buf = b""
         for row in self.matrix[::-1]:
-            bufrow = ''.join([pixel(cell) * cellsize for cell in row])
+            bufrow = b''.join([pixel(cell) * cellsize for cell in row])
             for _ in range(0, cellsize):
                 buf += bufrow
         return buf

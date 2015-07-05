@@ -3,7 +3,7 @@
 __revision__ = "$Rev$"
 
 import sys
-from reedsolomon import get_reed_solomon_code
+from .reedsolomon import get_reed_solomon_code
 import logging
 
 log = logging.getLogger("datamatrix")

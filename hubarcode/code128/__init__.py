@@ -13,8 +13,8 @@ http://www.adams1.com/pub/russadam/128code.html
 
 You may use this under a BSD License.
 """
-from textencoder import TextEncoder
-from renderer import Code128Renderer
+from .textencoder import TextEncoder
+from .renderer import Code128Renderer
 import logging
 
 log = logging.getLogger("code128")

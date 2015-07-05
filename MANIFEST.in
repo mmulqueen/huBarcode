@@ -1,3 +1,0 @@
-include hubarcode/fonts/*.pil
-include hubarcode/fonts/*.pbm
-include hubarcode/qrcode/qrcode_data/*.dat

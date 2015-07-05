@@ -2,7 +2,7 @@
 
 import logging
 
-import isodata as isodata
+from . import isodata
 
 LOG = logging.getLogger("qrcode")
 

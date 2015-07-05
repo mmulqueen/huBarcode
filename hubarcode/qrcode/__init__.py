@@ -12,8 +12,8 @@ All needed by the user is done via the QRCodeEncoder class:
 
 __revision__ = "$Rev$"
 
-from textencoder import TextEncoder
-from renderer import QRCodeRenderer
+from .textencoder import TextEncoder
+from .renderer import QRCodeRenderer
 
 
 class QRCodeEncoder:

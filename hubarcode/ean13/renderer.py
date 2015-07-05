@@ -13,7 +13,7 @@ try:
 except ImportError:
     pass
 
-from cStringIO import StringIO
+from io import StringIO
 # maps bar width against font size
 font_sizes = {
     1: 8,
@@ -43,7 +43,7 @@ class EAN13Renderer:
 
         quiet_width = bar_width * 9
         image_width = (2 * quiet_width) + (num_bars * bar_width)
-        image_height = image_width / 2
+        image_height = image_width // 2
 
         img = Image.new('L', (image_width, image_height), 255)
 
@@ -52,7 +52,7 @@ class EAN13Renderer:
             def __init__(self, img):
                 self.img = img
                 self.current_x = quiet_width
-                self.symbol_top = quiet_width / 2
+                self.symbol_top = quiet_width // 2
 
             def write_bar(self, value, full=False):
                 """Draw a bar at the current position,
@@ -83,12 +83,12 @@ class EAN13Renderer:
         # Draw the text
         font_size = font_sizes.get(bar_width, 24)
 
-        # Use relative name, PIL will do searching for us
-        fontfile = os.path.join("fonts", "courR%02d.pil" % font_size)
+        fontdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../fonts/")
+        fontfile = os.path.join(fontdir, "courR%02d.pil" % font_size)
 
         font = ImageFont.load_path(fontfile)
         draw = ImageDraw.Draw(img)
-        draw.text((1 * bar_width, int(image_height * 0.7)),
+        draw.text((1 * bar_width, int(image_height * 0.8)),
                   self.code[0], font=font)
         draw.text((16 * bar_width, int(image_height * 0.8)),
                   self.code[1:7], font=font)

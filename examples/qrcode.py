@@ -12,4 +12,4 @@ logging.getLogger("qrcode").addHandler(logging.StreamHandler(sys.stdout))
 if __name__ == "__main__":
     ENCODER = QRCodeEncoder(sys.argv[1])
     ENCODER.save("test.png", 3)
-    print ENCODER.get_ascii()
+    print(ENCODER.get_ascii())

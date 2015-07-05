@@ -4,7 +4,7 @@ import logging
 log = logging.getLogger("code128")
 
 
-import encoding
+from . import encoding
 
 START_A, START_B, START_C = 103, 104, 105
 TO_C, TO_B, TO_A = 99, 100, 101

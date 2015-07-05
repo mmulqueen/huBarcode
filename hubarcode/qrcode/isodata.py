@@ -49,49 +49,41 @@ class MatrixInfo:
 
         filename = path + "/qrv" + str(version) + "_"
         filename += str(ecl) + ".dat"
-        fhndl = open(filename, "rb")
-        unpack = lambda y: [ord(x) for x in y]
-        self.matrix_d = []
-        self.matrix_d.append(unpack(fhndl.read(self.byte_num)))
-        self.matrix_d.append(unpack(fhndl.read(self.byte_num)))
-        self.matrix_d.append(unpack(fhndl.read(self.byte_num)))
-        self.format_info = []
-        self.format_info.append(unpack(fhndl.read(15)))
-        self.format_info.append(unpack(fhndl.read(15)))
-        self.rs_ecc_codewords = ord(fhndl.read(1))
-        self.rs_block_order = unpack(fhndl.read(128))
-        fhndl.close()
+
+        unpack = list
+
+        with open(filename, "rb") as fhndl:
+            self.matrix_d = []
+            self.matrix_d.append(unpack(fhndl.read(self.byte_num)))
+            self.matrix_d.append(unpack(fhndl.read(self.byte_num)))
+            self.matrix_d.append(unpack(fhndl.read(self.byte_num)))
+            self.format_info = []
+            self.format_info.append(unpack(fhndl.read(15)))
+            self.format_info.append(unpack(fhndl.read(15)))
+            self.rs_ecc_codewords = ord(fhndl.read(1))
+            self.rs_block_order = unpack(fhndl.read(128))
 
         filename = path + "/rsc" + str(self.rs_ecc_codewords) + ".dat"
+        with open(filename, "rb") as fhndl:
+            self.rs_cal_table = []
 
-        fhndl = open(filename, "rb")
-
-        self.rs_cal_table = []
-
-        for _ in range(0, 256):
-            self.rs_cal_table.append(unpack(fhndl.read(self.rs_ecc_codewords)))
-        # end for
-        fhndl.close()
+            for _ in range(0, 256):
+                self.rs_cal_table.append(unpack(fhndl.read(self.rs_ecc_codewords)))
 
         filename = path + "/qrvfr" + str(version) + ".dat"
-        fhndl = open(filename, "rb")
-        frame_data_str = fhndl.read(65535)
-        self.frame_data = []
-        for line in frame_data_str.split("\n"):
-            frame_line = []
-            for char in line:
-                if char == '1':
-                    frame_line.append(1)
-                elif char == '0':
-                    frame_line.append(0)
-                else:
-                    raise ValueError("Corrupted frame data file")
-                # end if
-            # end for
-            self.frame_data.append(frame_line)
-        # end for
-        fhndl.close()
-    # end def __init__
+        with open(filename, "r") as fhndl:
+            frame_data_str = fhndl.read(65535)
+            self.frame_data = []
+            for line in frame_data_str.splitlines():
+                frame_line = []
+                for char in line:
+                    if char == '1':
+                        frame_line.append(1)
+                    elif char == '0':
+                        frame_line.append(0)
+                    else:
+                        raise ValueError("Corrupted frame data file, found char: {}".format(char))
+                self.frame_data.append(frame_line)
 
     def create_matrix(self, version, codewords):
         """Create matrix based on version and fills it w/ codewords"""

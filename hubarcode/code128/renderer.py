@@ -1,5 +1,5 @@
 """Rendering code for code128 barcode"""
-from cStringIO import StringIO
+from io import StringIO
 try:
     from PIL import Image, ImageFont, ImageDraw
 except ImportError:
@@ -73,7 +73,7 @@ class Code128Renderer:
 
         # Image height 30% of width
         label_border = self.options.get('label_border', 0)
-        self.image_height = self.options.get('height') or (self.image_width / 3)
+        self.image_height = self.options.get('height') or (self.image_width // 3)
         bar_height = self.image_height - label_border - fontsize
 
         # Image: has a white background
@@ -87,7 +87,7 @@ class Code128Renderer:
                 self.img = img
                 self.current_x = quiet_width
                 if show_label:
-                    self.symbol_top = quiet_width / 2
+                    self.symbol_top = quiet_width // 2
                 else:
                     self.symbol_top = 0
                 self.bar_height = bar_height

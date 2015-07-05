@@ -5,7 +5,7 @@ __revision__ = "$Rev$"
 import unittest
 import os
 
-from __init__ import DataMatrixEncoder
+from .__init__ import DataMatrixEncoder
 
 dmtxread_path = "dmtxread"
 dmtxwrite_path = "dmtxwrite"
@@ -50,7 +50,7 @@ class MatrixTest(unittest.TestCase):
 
             if not (os.path.exists(os.path.join('/usr/bin', dmtxread_path))
                     or os.path.exists(os.path.join('/usr/local/bin', dmtxread_path))):
-                print "%r does not exist, skipping decoding tests" % dmtxread_path
+                print("%r does not exist, skipping decoding tests" % dmtxread_path)
             else:
                 fin = os.popen("sh -c '%s datamatrix-test.png'" % (dmtxread_path))
                 self.assertEqual(fin.readline(), string)
@@ -63,7 +63,7 @@ class MatrixTest(unittest.TestCase):
             mine = encoder.get_ascii()
 
             if not os.path.exists(dmtxwrite_path):
-                print "%r does not exist, skipping encoding tests" % dmtxwrite_path
+                print("%r does not exist, skipping encoding tests" % dmtxwrite_path)
             else:
                 fin = os.popen("%s '%s'" % (dmtxwrite_path, string))
                 output = ""
@@ -88,7 +88,7 @@ class MatrixTest(unittest.TestCase):
                 102, 116, 117, 33, 106, 116, 117, 33, 161, 163,
                 56, 129, 83, 116, 244, 3, 40, 16, 79, 220, 144,
                 76, 17, 186, 175, 211, 244, 84, 59, 71]}
-        from textencoder import TextEncoder
+        from .textencoder import TextEncoder
         enc = TextEncoder()
         for key, value in correct_encodings.items():
             self.assertEqual([ord(char) for char in enc.encode(key)], value)

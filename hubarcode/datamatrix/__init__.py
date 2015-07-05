@@ -34,9 +34,9 @@ You may use this under a BSD License.
 
 __revision__ = "$Rev$"
 
-from textencoder import TextEncoder
-from placement import DataMatrixPlacer
-from renderer import DataMatrixRenderer
+from .textencoder import TextEncoder
+from .placement import DataMatrixPlacer
+from .renderer import DataMatrixRenderer
 
 
 class DataMatrixEncoder:

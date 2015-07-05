@@ -1,6 +1,6 @@
 """QR Code renderer"""
 
-from cStringIO import StringIO
+from io import StringIO
 try:
     from PIL import Image
 except ImportError:
@@ -64,23 +64,18 @@ class QRCodeRenderer:
             """return pixel representation of a matrix value
             0 => white, 1 => black"""
             if value == 0:
-                return chr(255)
+                return b"\xff"
             elif value == 1:
-                return chr(0)
-            # end if
-        # end def pixel
+                return b"\x00"
 
         # PIL writes image buffers from the bottom up,
         # so feed in the rows in reverse
-        buf = ""
+        buf = b""
         for row in self.matrix[::-1]:
-            bufrow = ''.join([pixel(cell) * cellsize for cell in row])
+            bufrow = b''.join([pixel(cell) * cellsize for cell in row])
             for _ in range(0, cellsize):
                 buf += bufrow
-            # end for
-        # end for
         return buf
-    # end def get_buffer
 
     def get_ascii(self):
         """Write an ascii version of the matrix out to screen"""
