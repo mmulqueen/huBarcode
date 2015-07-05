@@ -3,7 +3,7 @@
 
 import logging
 import sys
-from hubarcode.code128 import Code128Encoder
+from pystrich.code128 import Code128Encoder
 
 logging.getLogger("code128").setLevel(logging.DEBUG)
 logging.getLogger("code128").addHandler(logging.StreamHandler(sys.stdout))

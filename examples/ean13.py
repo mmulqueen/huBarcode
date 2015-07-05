@@ -1,7 +1,7 @@
 """Example code for ean13 library"""
 __revision__ = "$Revision$"
 
-from hubarcode.ean13 import EAN13Encoder
+from pystrich.ean13 import EAN13Encoder
 import sys
 import logging
 

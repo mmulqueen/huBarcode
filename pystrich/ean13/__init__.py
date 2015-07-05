@@ -6,6 +6,7 @@ All needed by the user is done via the EAN13Encoder class:
 >>> encoder.save("test.png")
 
 Implemented by Helen Taylor for HUDORA GmbH.
+Updated and ported to Python 3 by Michael Mulqueen for Method B Ltd.
 
 Detailed documentation on the format here:
 http://www.barcodeisland.com/ean13.phtml

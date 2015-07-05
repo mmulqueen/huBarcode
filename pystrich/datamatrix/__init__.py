@@ -24,6 +24,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 Implemented by Helen Taylor for HUDORA GmbH.
+Updated and ported to Python 3 by Michael Mulqueen for Method B Ltd.
 
 Detailed documentation on the format here:
 http://grandzebu.net/informatique/codbar-en/datamatrix.htm
