@@ -1,19 +1,11 @@
 """Rendering code for EAN-13 barcode"""
 
-import os
-try:
-    from PIL import Image, ImageFont, ImageDraw
-except ImportError:
-    import Image
-    import ImageFont
-    import ImageDraw
-# handling movement of reduce to functools python >= 2.6
-try:
-    from functools import reduce
-except ImportError:
-    pass
-
+from functools import reduce
 from io import StringIO
+
+from PIL import Image, ImageFont, ImageDraw
+
+from pystrich.fonts import get_font
 # maps bar width against font size
 font_sizes = {
     1: 8,
@@ -86,10 +78,7 @@ class EAN13Renderer:
         # Draw the text
         font_size = font_sizes.get(bar_width, 24)
 
-        fontdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../fonts/")
-        fontfile = os.path.join(fontdir, "courR%02d.pil" % font_size)
-
-        font = ImageFont.load_path(fontfile)
+        font = get_font("courR", font_size)
         draw = ImageDraw.Draw(img)
         draw.text((1 * bar_width, int(image_height * 0.7)),
                   self.code[0], font=font)

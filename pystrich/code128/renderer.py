@@ -1,13 +1,11 @@
 """Rendering code for code128 barcode"""
-from io import StringIO
-try:
-    from PIL import Image, ImageFont, ImageDraw
-except ImportError:
-    import Image
-    import ImageFont
-    import ImageDraw
+
 import logging
-import os
+from io import StringIO
+
+from PIL import Image, ImageFont, ImageDraw
+
+from pystrich.fonts import get_font
 
 log = logging.getLogger("code128")
 
@@ -60,13 +58,7 @@ class Code128Renderer:
             if ttf_font:
                 font = ImageFont.truetype(ttf_font, fontsize)
             else:
-                # Locate and load the font file relative to the module
-                c128dir, _ = os.path.split(__file__)
-                rootdir, _ = os.path.split(c128dir)
-
-                fontfile = os.path.join(
-                    rootdir, "fonts", "courR%02d.pil" % fontsize)
-                font = ImageFont.load_path(fontfile)
+                font = get_font("courR", fontsize)
 
         # Total image width
         self.image_width = (2 * quiet_width) + (num_bars * bar_width)
