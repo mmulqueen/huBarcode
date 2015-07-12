@@ -7,6 +7,8 @@ supports
  * ean13
  * datamatrix
  * qrcode
+ 
+[![Build Status](https://travis-ci.org/mmulqueen/pyStrich.svg)](https://travis-ci.org/mmulqueen/pyStrich)
 
 Usage
 -----
