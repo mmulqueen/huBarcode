@@ -4,4 +4,4 @@ from pystrich.code128.test_code128 import Code128Test
 
 for index, string in enumerate(Code128Test.test_strings):
     enc = Code128Encoder(string)
-    enc.save("hubarcode/code128/test_img/%d.png" % (index + 1))
+    enc.save("pystrich/code128/test_img/%d.png" % (index + 1))
