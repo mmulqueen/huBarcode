@@ -102,7 +102,7 @@ class MatrixInfo:
                 pos_y = self.matrix_d[1][codeword_bits_number]
                 mask = self.matrix_d[2][codeword_bits_number]
                 matrix[pos_x][pos_y] = ((255 * (codeword_i & 1)) ^ mask)
-                codeword_i = codeword_i >> 1
+                codeword_i >>= 1
                 j -= 1
             # end while
             i += 1
@@ -225,7 +225,7 @@ class MatrixInfo:
 
             dem_data[0] += chr(170) + dem_data[1]
             demerit_score = self.calc_demerit_score(bit_r, dem_data)
-            if (demerit_score <= min_demerit_score or i == 0):
+            if demerit_score <= min_demerit_score or i == 0:
                 mask_number = i
                 min_demerit_score = demerit_score
             # end if
@@ -238,7 +238,7 @@ class MatrixInfo:
 def strings_and(str1, str2):
     """Apply logical 'and' to strings"""
 
-    if (len(str1) < len(str2)):
+    if len(str1) < len(str2):
         str1, str2 = str2, str1
     # end if
     str2 += '\0' * (len(str1) - len(str2))
@@ -249,7 +249,7 @@ def strings_and(str1, str2):
 def strings_or(str1, str2):
     """Apply logical 'or' to strings"""
 
-    if (len(str1) < len(str2)):
+    if len(str1) < len(str2):
         str1, str2 = str2, str1
     # end if
     str2 += '\0' * (len(str1) - len(str2))

@@ -1,7 +1,7 @@
 """Generate test images for EAN13 barcode encoder"""
 
-from __init__ import EAN13Encoder
-from eantest import EAN13Test
+from pystrich.ean13 import EAN13Encoder
+from pystrich.ean13.test_ean13 import EAN13Test
 
 
 for index, string in enumerate(EAN13Test.test_strings):

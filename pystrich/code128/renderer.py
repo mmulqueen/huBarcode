@@ -109,7 +109,7 @@ class Code128Renderer:
                 for bar in bars:
                     self.write_bar(int(bar))
 
-        # draw the barcode bars themself
+        # draw the barcode bars themselves
         writer = BarWriter(img, bar_height)
         writer.write_bars(self.bars)
 

@@ -18,7 +18,7 @@ class BitStream:
     def append(self, value, bitsnum):
         """Append 'bitsnum' bits to the end of bit stream"""
 
-        if (bitsnum < 1):
+        if bitsnum < 1:
             raise ValueError("Wrong value for number of bits (%d)" % bitsnum)
         # end if
         for i in range(bitsnum - 1, -1, -1):
@@ -29,7 +29,7 @@ class BitStream:
     def prepend(self, value, bitsnum):
         """Prepend 'bitsnum' bits to the begining of bit stream"""
 
-        if (bitsnum < 1):
+        if bitsnum < 1:
             raise ValueError("Wrong value for number of bits (%d)" % bitsnum)
         # end if
         for i in range(0, bitsnum, 1):
@@ -153,7 +153,7 @@ class TextEncoder:
             rs_temp[rs_block_number].append(self.codewords[i])
 
             j += 1
-            if (j >= self.minfo.rs_block_order[rs_block_number] - self.minfo.rs_ecc_codewords):
+            if j >= self.minfo.rs_block_order[rs_block_number] - self.minfo.rs_ecc_codewords:
                 j = 0
                 rs_block_number += 1
                 rs_temp.append([])
@@ -176,7 +176,7 @@ class TextEncoder:
                     rstemp = rstemp[1:]
                     cal = self.minfo.rs_cal_table[first]
 
-                    if (len(rstemp) < len(cal)):
+                    if len(rstemp) < len(cal):
                         rstemp, cal = cal, rstemp
                     # end if
                     cal += [0] * (len(rstemp) - len(cal))

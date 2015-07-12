@@ -18,7 +18,7 @@ __revision__ = "$Rev: 1$"
 
 from . import encoding
 from .renderer import EAN13Renderer
-#handling movement of reduce to functools python >= 2.6
+# handling movement of reduce to functools python >= 2.6
 try:
     from functools import reduce
 except ImportError:

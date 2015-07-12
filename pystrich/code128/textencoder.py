@@ -81,7 +81,7 @@ class TextEncoder:
             else:
                 log.error("No charset found for character %d" % ord(char))
 
-             # Take care of the odd leftover digit if there is one
+            # Take care of the odd leftover digit if there is one
             if len(self.digits) == 1:
                 codes.append(self.convert_char(self.digits[0]))
                 self.digits = ''
@@ -143,7 +143,8 @@ class TextEncoder:
                     self.digits = ""
                     return ret
 
-    def optimize_encoding(self, enc):
+    @staticmethod
+    def optimize_encoding(enc):
         """Perform various optimizations on the encoded string"""
 
         # [START_X, TO_Y]  => [START_Y,]
@@ -182,7 +183,8 @@ class TextEncoder:
         self.optimize_encoding(encoded_text)
         return encoded_text
 
-    def get_bars(self, encoded_text, checksum):
+    @staticmethod
+    def get_bars(encoded_text, checksum):
         """Return the bar encoding (a string of ones and zeroes)
         representing the given encoded text and checksum digit.
         Stop code and termination bars are added onto the end"""

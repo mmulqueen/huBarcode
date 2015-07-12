@@ -5,7 +5,7 @@ __revision__ = "$Rev$"
 import unittest
 import os
 
-from .__init__ import DataMatrixEncoder
+from pystrich.datamatrix import DataMatrixEncoder
 
 dmtxread_path = "dmtxread"
 dmtxwrite_path = "dmtxwrite"
@@ -52,7 +52,7 @@ class MatrixTest(unittest.TestCase):
                     or os.path.exists(os.path.join('/usr/local/bin', dmtxread_path))):
                 print("%r does not exist, skipping decoding tests" % dmtxread_path)
             else:
-                fin = os.popen("sh -c '%s datamatrix-test.png'" % (dmtxread_path))
+                fin = os.popen("sh -c '%s datamatrix-test.png'" % dmtxread_path)
                 self.assertEqual(fin.readline(), string)
 
     def test_against_dmtx(self):

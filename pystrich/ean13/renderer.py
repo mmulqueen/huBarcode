@@ -28,6 +28,9 @@ class EAN13Renderer:
     bar encodings and guard bars,
     it will add edge zones and render to an image"""
 
+    width = None
+    height = None
+
     def __init__(self, code, left_bars, right_bars, guards):
         self.code = code
         self.left_bars = left_bars
@@ -88,7 +91,7 @@ class EAN13Renderer:
 
         font = ImageFont.load_path(fontfile)
         draw = ImageDraw.Draw(img)
-        draw.text((1 * bar_width, int(image_height * 0.8)),
+        draw.text((1 * bar_width, int(image_height * 0.7)),
                   self.code[0], font=font)
         draw.text((16 * bar_width, int(image_height * 0.8)),
                   self.code[1:7], font=font)

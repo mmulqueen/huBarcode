@@ -2,8 +2,10 @@
 
 
 import unittest
+import filecmp
+import tempfile
 
-from __init__ import Code128Encoder
+from pystrich.code128 import Code128Encoder
 
 
 class Code128Test(unittest.TestCase):
@@ -72,12 +74,14 @@ class Code128Test(unittest.TestCase):
         """Compare the output of this library with generated barcodes"""
 
         for index, string in enumerate(Code128Test.test_strings):
+            generated = tempfile.mkstemp(".png")[1]
             encoder = Code128Encoder(string)
-            encoder.save('test.png')
+            encoder.save(generated)
 
-            import filecmp
-            self.failUnless(filecmp.cmp('test.png',
-                            'hubarcode/code128/test_img/%d.png' % (index + 1)))
+
+            test_against = 'pystrich/code128/test_img/%d.png' % (index + 1)
+            self.assertTrue(filecmp.cmp(generated, test_against),
+                                        msg="{} didn't match {}".format(test_against, generated))
 
 
 if __name__ == '__main__':

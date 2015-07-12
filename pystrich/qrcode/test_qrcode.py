@@ -2,10 +2,10 @@
 
 import unittest
 
-from qrcode import QRCodeEncoder
+from pystrich.qrcode import QRCodeEncoder
 
 
-class MatrixTest(unittest.TestCase):
+class QRTest(unittest.TestCase):
     """Unit test class for QR Code encoder"""
 
     test_strings = ("banana",
@@ -36,13 +36,13 @@ class MatrixTest(unittest.TestCase):
         """Compare the output of this library with generated barcodes"""
 
         i = 1
-        for string in MatrixTest.test_strings:
+        for string in QRTest.test_strings:
             encoder = QRCodeEncoder(string, 'M')
             encoder.save('test.png', 3)
 
             import filecmp
-            self.failUnless(filecmp.cmp('test.png',
-                                        'hubarcode/qrcode/test_img/%d.png' % i))
+            self.assertTrue(filecmp.cmp('test.png',
+                                        'pystrich/qrcode/test_img/%d.png' % i))
             i += 1
 
     def test_encoding(self):
@@ -64,7 +64,7 @@ class MatrixTest(unittest.TestCase):
                 236, 17, 236, 124, 222, 181, 177, 208, 193, 45, 100,
                 155, 47, 28, 28, 88, 55, 156, 59, 0, 0]}
 
-        from qrcode.textencoder import TextEncoder
+        from pystrich.qrcode.textencoder import TextEncoder
         enc = TextEncoder()
         for key, value in correct_encodings.items():
             enc.encode(key, ecl='M')
