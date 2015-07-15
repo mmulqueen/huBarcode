@@ -4,6 +4,8 @@ include README.rst
 include requirements.txt
 include setup.py
 recursive-include pystrich *
+include pystrich/fonts/*.pbm
+include pystrich/fonts/*.pil
 
 
 # Prune stray bytecode files.
