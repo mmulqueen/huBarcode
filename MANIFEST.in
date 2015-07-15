@@ -3,9 +3,7 @@ include LICENSE
 include README.rst
 include requirements.txt
 include setup.py
-recursive-include pystrich *
-include pystrich/fonts/*.pbm
-include pystrich/fonts/*.pil
+recursive-include pystrich *.py *.pbm *.pil
 
 
 # Prune stray bytecode files.
