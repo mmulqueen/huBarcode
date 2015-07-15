@@ -1,10 +1,9 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='pyStrich',
-    version='0.1.1',
-    packages=['pystrich', 'pystrich.ean13', 'pystrich.qrcode',
-              'pystrich.code128', 'pystrich.datamatrix', 'pystrich.fonts'],
+    version='0.1.2',
+    packages=find_packages(),
     url='http://method-b.uk/pystrich/',
     license='Apache 2.0',
     author='Michael Mulqueen',
