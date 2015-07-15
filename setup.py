@@ -4,6 +4,7 @@ setup(
     name='pyStrich',
     version='0.1.2',
     packages=find_packages(),
+    package_data={'pystrich': ['fonts/*.pil', 'fonts/*.pbm']},
     url='http://method-b.uk/pystrich/',
     license='Apache 2.0',
     author='Michael Mulqueen',
