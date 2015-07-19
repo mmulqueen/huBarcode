@@ -7,6 +7,8 @@ supports
  * ean13
  * datamatrix
  * qrcode
+
+Available from PyPI: https://pypi.python.org/pypi/pyStrich
  
 [![Build Status](https://travis-ci.org/mmulqueen/pyStrich.svg)](https://travis-ci.org/mmulqueen/pyStrich)
 
