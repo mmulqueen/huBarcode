@@ -4,11 +4,13 @@ __revision__ = "$Rev$"
 
 import unittest
 import os
+from distutils.spawn import find_executable
+import subprocess
 
 from pystrich.datamatrix import DataMatrixEncoder
 
-dmtxread_path = "dmtxread"
-dmtxwrite_path = "dmtxwrite"
+dmtxread_path = find_executable("dmtxread")
+dmtxwrite_path = find_executable("dmtxwrite")
 
 
 class MatrixTest(unittest.TestCase):
@@ -48,31 +50,31 @@ class MatrixTest(unittest.TestCase):
             encoder = DataMatrixEncoder(string)
             encoder.save("datamatrix-test.png")
 
-            if not (os.path.exists(os.path.join('/usr/bin', dmtxread_path))
-                    or os.path.exists(os.path.join('/usr/local/bin', dmtxread_path))):
-                print("%r does not exist, skipping decoding tests" % dmtxread_path)
+            if not dmtxread_path:
+                print("dmtxread is not installed or cannot be found - Debian package libdmtx-utils")
             else:
                 fin = os.popen("sh -c '%s datamatrix-test.png'" % dmtxread_path)
                 self.assertEqual(fin.readline(), string)
 
     def test_against_dmtx(self):
+        self.maxDiff = None
         """Compare the output of this library with that of dmtxwrite"""
 
         for string in MatrixTest.test_strings:
             encoder = DataMatrixEncoder(string)
             mine = encoder.get_ascii()
 
-            if not os.path.exists(dmtxwrite_path):
-                print("%r does not exist, skipping encoding tests" % dmtxwrite_path)
+            if not dmtxwrite_path:
+                print("dmtxwrite is not installed or cannot be found, skipping encoding tests - Debian package "
+                      "libdmtx-utils" % dmtxwrite_path)
             else:
-                fin = os.popen("%s '%s'" % (dmtxwrite_path, string))
+                p = subprocess.Popen([dmtxwrite_path, "-p"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                stdout, stderr = p.communicate(string.encode("ascii"))
                 output = ""
-                while True:
-                    line = fin.readline()
-                    if not line:
-                        break
-                    if line[0] == 'X':
-                        output += line
+                for line in stdout.decode("ascii").splitlines():
+                    line = line.lstrip()
+                    if line and line[0] == 'X':
+                        output += line + "\n"
                 self.assertEqual(output, mine)
 
     def test_encoding(self):
