@@ -2,13 +2,17 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyStrich',
-    version='0.4',
+    version='0.6',
     packages=['pystrich',
               'pystrich.ean13',
               'pystrich.qrcode',
               'pystrich.code128',
               'pystrich.datamatrix',
               'pystrich.fonts'],
+    package_data={
+        'pystrich.fonts': ['*.pil', '*.pbm'],
+        'pystrich.qrcode': ['qrcode_data/*.dat']
+    },
     install_requires = ['Pillow'],
     url='http://method-b.uk/pystrich/',
     license='Apache 2.0',
