@@ -1,7 +1,7 @@
 """Rendering code for code128 barcode"""
 
 import logging
-from io import StringIO
+from io import BytesIO
 
 from PIL import Image, ImageFont, ImageDraw
 
@@ -123,7 +123,7 @@ class Code128Renderer:
 
     def get_imagedata(self, bar_width):
         """Write the matrix out as PNG to an bytestream"""
-        imagedata = StringIO()
+        imagedata = BytesIO()
         img = self.get_pilimage(bar_width)
         img.save(imagedata, "PNG")
         return imagedata.getvalue()

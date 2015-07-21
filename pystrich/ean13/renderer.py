@@ -1,7 +1,7 @@
 """Rendering code for EAN-13 barcode"""
 
 from functools import reduce
-from io import StringIO
+from io import BytesIO
 
 from PIL import Image, ImageFont, ImageDraw
 
@@ -98,7 +98,7 @@ class EAN13Renderer:
 
     def get_imagedata(self, bar_width):
         """Write the matrix out as PNG to a bytestream"""
-        buffer = StringIO()
+        buffer = BytesIO()
         img = self.get_pilimage(bar_width)
         img.save(buffer, "PNG")
         return buffer.getvalue()

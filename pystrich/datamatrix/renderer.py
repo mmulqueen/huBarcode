@@ -2,7 +2,7 @@
 
 __revision__ = "$Rev$"
 
-from io import StringIO
+from io import BytesIO
 
 from PIL import Image
 
@@ -83,7 +83,7 @@ class DataMatrixRenderer:
 
     def get_imagedata(self, cellsize):
         """Write the matrix out as PNG to an bytestream"""
-        imagedata = StringIO()
+        imagedata = BytesIO()
         img = self.get_pilimage(cellsize)
         img.save(imagedata, "PNG")
         return imagedata.getvalue()
