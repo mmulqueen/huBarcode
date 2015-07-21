@@ -56,27 +56,6 @@ class MatrixTest(unittest.TestCase):
                 fin = os.popen("sh -c '%s datamatrix-test.png'" % dmtxread_path)
                 self.assertEqual(fin.readline(), string)
 
-    def test_against_dmtx(self):
-        self.maxDiff = None
-        """Compare the output of this library with that of dmtxwrite"""
-
-        for string in MatrixTest.test_strings:
-            encoder = DataMatrixEncoder(string)
-            mine = encoder.get_ascii()
-
-            if not dmtxwrite_path:
-                print("dmtxwrite is not installed or cannot be found, skipping encoding tests - Debian package "
-                      "libdmtx-utils" % dmtxwrite_path)
-            else:
-                p = subprocess.Popen([dmtxwrite_path, "-p"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-                stdout, stderr = p.communicate(string.encode("ascii"))
-                output = ""
-                for line in stdout.decode("ascii").splitlines():
-                    line = line.lstrip()
-                    if line and line[0] == 'X':
-                        output += line + "\n"
-                self.assertEqual(output, mine)
-
     def test_encoding(self):
         """Test that text is correctly encoded, and also that padding
         and error codewords are correctly added"""
