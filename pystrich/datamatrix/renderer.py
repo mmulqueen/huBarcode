@@ -7,14 +7,21 @@ from io import BytesIO
 from PIL import Image
 
 
+def repr_matrix(matrix):
+    return "\n".join(repr(x) for x in matrix)
+
+
 class DataMatrixRenderer:
     """Rendering class - given a pre-populated datamatrix.
     it will add edge handles and render to either to an image
     (including quiet zone) or ascii printout"""
 
-    def __init__(self, matrix):
+    def __init__(self, matrix, regions):
         self.width = len(matrix)
         self.height = len(matrix[0])
+        self.regions = regions
+        self.region_size = self.width//regions
+        self.quiet_zone = 2
 
         self.matrix = matrix
 
@@ -32,40 +39,66 @@ class DataMatrixRenderer:
 
     def add_handles(self):
         """Set up the edge handles"""
-        # bottom solid border
-        for posx in range(0, self.width):
-            self.put_cell((posx, self.height - 1))
 
-        # left solid border
-        for posy in range(0, self.height):
-            self.put_cell((0, posy))
+        for x_index in range(self.regions):
+            for y_index in range(self.regions):
+                x_origin = x_index * (self.region_size + 2) + self.quiet_zone
+                y_origin = y_index * (self.region_size + 2) + self.quiet_zone
+                x_max = x_origin + self.region_size + 1
+                y_max = y_origin + self.region_size + 1
 
-        # top broken border
-        for i in range(0, self.width - 1, 2):
-            self.put_cell((i, 0))
+                # bottom solid border
+                for posx in range(x_origin, x_max):
+                    self.put_cell((posx, y_max))
 
-        # right broken border
-        for i in range(self.height - 1, 0, -2):
-            self.put_cell((self.width - 1, i))
+                # left solid border
+                for posy in range(y_origin, y_max):
+                    self.put_cell((x_origin, posy))
 
-    def add_border(self, colour=1, width=1):
+                # top broken border
+                for i in range(x_origin, x_max, 2):
+                    self.put_cell((i, y_origin))
+
+                # right broken border
+                for i in range(y_max, y_origin, -2):
+                    self.put_cell((x_max, i))
+
+    def add_border(self, colour=1):
         """Wrap the matrix in a border of given width
             and colour"""
 
-        self.width += (width * 2)
-        self.height += (width * 2)
+        a_gap = 1  # Gap for alignment/"handles"
+        self.width += a_gap*2 + self.quiet_zone*2 + (self.regions-1)*a_gap*2
+        self.height += a_gap*2 + self.quiet_zone*2 + (self.regions-1)*a_gap*2
 
-        self.matrix = \
-            [[colour] * self.width] * width + \
-            [[colour] * width + self.matrix[i] + [colour] * width
-                for i in range(0, self.height - (width * 2))] + \
-            [[colour] * self.width] * width
+        new_matrix = []
+        for i in range(a_gap+self.quiet_zone):
+            new_matrix += [[colour]*self.width]
+
+        for row_n, row in enumerate(self.matrix):
+            if row_n > 0 and row_n % self.region_size == 0:
+                # Vertical gap between regions
+                for j in range(a_gap*2):
+                    new_matrix += [[colour]*self.width]
+            # Left gap
+            new_row = [colour]*(a_gap+self.quiet_zone)
+            # Split according to regions
+            for i in range(self.regions):
+                part = row[i*self.region_size:(i+1)*self.region_size]
+                if i > 0:
+                    # Add the space for the alignment gap
+                    new_row += [colour]*(a_gap*2)
+                new_row += part
+            # Right gap
+            new_row += [colour]*(a_gap+self.quiet_zone)
+            new_matrix.append(new_row)
+
+        for i in range(a_gap+self.quiet_zone):
+            new_matrix += [[colour]*self.width]
+        self.matrix = new_matrix
 
     def get_pilimage(self, cellsize):
         """Return the matrix as an PIL object"""
-
-        # add the quiet zone (2 x cell width)
-        self.add_border(colour=0, width=2)
 
         # get the matrix into the right buffer format
         buff = self.get_buffer(cellsize)

@@ -2,7 +2,6 @@
 
 __revision__ = "$Rev$"
 
-import sys
 from .reedsolomon import get_reed_solomon_code
 import logging
 
@@ -23,6 +22,11 @@ data_region_size = (8, 10, 12, 14, 16, 18, 20, 22, 24,
                     14, 16, 18, 20, 22, 24,
                     18, 20, 22)
 
+hv_regions = (1, 1, 1, 1, 1, 1, 1, 1, 1,
+              2, 2, 2, 2, 2, 2,
+              4, 4, 4, 4, 4, 4,
+              6, 6, 6)
+
 
 class DataTooLongForImplementation(Exception):
     pass
@@ -35,6 +39,7 @@ class TextEncoder:
         self.codewords = ''
         self.size_index = None
         self.mtx_size = 0
+        self.regions = None
 
     def encode(self, text):
         """Encode the given text and add padding and error codes
@@ -53,6 +58,7 @@ class TextEncoder:
             ' '.join([str(ord(codeword)) for codeword in self.codewords]))
 
         self.mtx_size = data_region_size[self.size_index]
+        self.regions = hv_regions[self.size_index]
 
         log.debug("Matrix size will be %d", self.mtx_size)
 
@@ -94,8 +100,8 @@ class TextEncoder:
             if length >= unpadded_len:
                 break
 
-        if self.size_index > 8:
-            raise DataTooLongForImplementation("PyStrich does not currently support encoding beyond 44 characters. "
+        if self.size_index > 13:
+            raise DataTooLongForImplementation("PyStrich does not currently support encoding beyond 174 characters. "
                                                "See https://github.com/mmulqueen/pyStrich/issues/2")
 
         # Number of characters with which the data will be padded

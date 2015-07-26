@@ -39,6 +39,7 @@ class MatrixTest(unittest.TestCase):
                     "http://www.hudora.de/track/003400",
                     "http://www.hudora.de/track/00340",
                     "http://www.hudora.de/track/0034",
+                    "This sentence will need multiple datamatrix regions. Tests to see whether bug 2 is fixed."
                     )
 
     def test_encode_decode(self):

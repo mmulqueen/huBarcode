@@ -54,7 +54,8 @@ class DataMatrixEncoder:
         codewords = enc.encode(text)
         self.width = 0
         self.height = 0
-        matrix_size = enc.mtx_size
+        matrix_size = enc.mtx_size*enc.regions
+        self.regions = enc.regions
 
         self.matrix = [[None] * matrix_size for _ in range(0, matrix_size)]
 
@@ -63,12 +64,12 @@ class DataMatrixEncoder:
 
     def save(self, filename, cellsize=5):
         """Write the matrix out to an image file"""
-        dmtx = DataMatrixRenderer(self.matrix)
+        dmtx = DataMatrixRenderer(self.matrix, self.regions)
         dmtx.write_file(cellsize, filename)
 
     def get_imagedata(self, cellsize=5):
         """Write the matrix out to an PNG bytestream"""
-        dmtx = DataMatrixRenderer(self.matrix)
+        dmtx = DataMatrixRenderer(self.matrix, self.regions)
         self.width = dmtx.width
         self.height = dmtx.height
         return dmtx.get_imagedata(cellsize)

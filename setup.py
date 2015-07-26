@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyStrich',
-    version='0.6',
+    version='0.7',
     packages=['pystrich',
               'pystrich.ean13',
               'pystrich.qrcode',
