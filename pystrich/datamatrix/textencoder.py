@@ -24,6 +24,10 @@ data_region_size = (8, 10, 12, 14, 16, 18, 20, 22, 24,
                     18, 20, 22)
 
 
+class DataTooLongForImplementation(Exception):
+    pass
+
+
 class TextEncoder:
     """Text encoder class for 2D datamatrix"""
 
@@ -91,8 +95,8 @@ class TextEncoder:
                 break
 
         if self.size_index > 8:
-            log.error("Data too big")
-            sys.exit(0)
+            raise DataTooLongForImplementation("PyStrich does not currently support encoding beyond 44 characters. "
+                                               "See https://github.com/mmulqueen/pyStrich/issues/2")
 
         # Number of characters with which the data will be padded
         padsize = length - unpadded_len
