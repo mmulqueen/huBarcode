@@ -147,4 +147,5 @@ if __name__=='__main__':
 
     print(np.mat(encoder.matrix))
     im = encoder.image_from_encoder()
+
     im.show()
