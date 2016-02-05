@@ -1,4 +1,5 @@
 """Matrix placement for 2D datamatrix barcode encoder"""
+from __future__ import print_function
 __revision__ = "$Rev$"
 
 
@@ -11,6 +12,8 @@ class DataMatrixPlacer:
         self.matrix = None
         self.rows = 0
         self.cols = 0
+        self.cw_list = []
+        self.cw_len = None
 
     def place_bit(self, position, bit):
         """Place bit in the correct location in the matrix"""
@@ -26,7 +29,17 @@ class DataMatrixPlacer:
             posy += self.cols
             posx += (4 - ((self.cols + 4) % 8))
 
+        cur = self.cw_len - len(self.cw_list)
         self.matrix[posx][posy] = bit
+        #self.matrix[posx][posy] = cur
+
+        for row in self.matrix:
+            for v in row:
+                k = 99 if v is None else int(v)
+                print('{:02d}'.format(k), end=',')
+            print()
+        print()
+        print('position', position, cur)
 
     def place_special_1(self, codeword):
         """Special corner case 1
@@ -131,27 +144,29 @@ class DataMatrixPlacer:
 
         row, col = 4, 0
 
-        cw_list = [ord(codeword) for codeword in codewords]
+        for o in [ord(codeword) for codeword in codewords]:
+            self.cw_list.append(o)
+        self.cw_len = len(self.cw_list)
 
         while True:
 
             # Special corner cases
             if row == self.rows and col == 0:
-                self.place_special_1(cw_list.pop(0))
+                self.place_special_1(self.cw_list.pop(0))
 
             elif row == self.rows - 2 and col == 0 and self.cols % 4:
-                self.place_special_2(cw_list.pop(0))
+                self.place_special_2(self.cw_list.pop(0))
 
             elif row == self.rows - 2 and col == 0 and (self.cols % 8 == 4):
-                self.place_special_3(cw_list.pop(0))
+                self.place_special_3(self.cw_list.pop(0))
 
             elif row == self.rows + 4 and col == 2 and (self.cols % 8 == 0):
-                self.place_special_4(cw_list.pop(0))
+                self.place_special_4(self.cw_list.pop(0))
 
             # Sweep upwards diagonally
             while True:
                 if row < self.rows and col >= 0 and self.matrix[row][col] is None:
-                    self.place_standard_shape((row, col), cw_list.pop(0))
+                    self.place_standard_shape((row, col), self.cw_list.pop(0))
 
                 row -= 2
                 col += 2
@@ -165,7 +180,7 @@ class DataMatrixPlacer:
             # Sweep downwards diagonally
             while True:
                 if row >= 0 and col < self.cols and self.matrix[row][col] is None:
-                    self.place_standard_shape((row, col), cw_list.pop(0))
+                    self.place_standard_shape((row, col), self.cw_list.pop(0))
 
                 row += 2
                 col -= 2
@@ -173,14 +188,26 @@ class DataMatrixPlacer:
                 if row >= self.rows or col < 0:
                     break
 
+                # if row==self.rows-1 and col==self.cols-1:
+                #     break
+
             row += 3
             col += 1
 
             if row >= self.rows and col >= self.cols:
                 break
 
+
         # Fill in any remaining Nones
         for row in self.matrix:
             for i in range(len(row)):
                 if row[i] is None:
                     row[i] = 0
+
+        for row in self.matrix:
+            for v in row:
+                k = 99 if v is None else int(v)
+                print('{:02d}'.format(k), end=',')
+            print()
+        print()
+
