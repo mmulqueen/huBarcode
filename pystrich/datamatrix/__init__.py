@@ -65,16 +65,16 @@ class DataMatrixEncoder:
         self.codewords = enc.encode(text, sz=sz)
         self.width = 0
         self.height = 0
-        matrix_size = enc.mtx_size
+        self.matrix_size = enc.mtx_size
         self.regions = enc.regions
 
-        self.matrix = [[None] * matrix_size[1] for _ in range(0, matrix_size[0])]
+        self.matrix = [[None] * self.matrix_size[1] for _ in range(0, self.matrix_size[0])]
 
         placer = DataMatrixPlacer()
         placer.place(self.codewords, self.matrix)
 
     def image_from_encoder(self):
-        if self.regions == (1,2):
+        if self.matrix_size[0] != self.matrix_size[1]:
             ans = self.add_margins(np.mat(self.matrix), self.regions[1])
             ans = self.add_quiet_zone(ans)
             m = np.array(ans, dtype='u1')
@@ -141,9 +141,10 @@ class DataMatrixEncoder:
 if __name__=='__main__':
 
     sz = None
-    test_string = 'wikipedia'
+    test_string = 'abc'
 
-    encoder = DataMatrixEncoder(test_string)
+    sz = (6, 16)
+    encoder = DataMatrixEncoder(test_string, sz=sz)
 
     print(np.mat(encoder.matrix))
     im = encoder.image_from_encoder()
