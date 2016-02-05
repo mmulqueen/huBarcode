@@ -75,8 +75,8 @@ class DataMatrixEncoder:
 
     def image_from_encoder(self):
         if self.regions == (1,2):
-            ans = encoder.add_margins(np.mat(self.matrix), self.regions[1])
-            ans = encoder.add_quiet_zone(ans)
+            ans = self.add_margins(np.mat(self.matrix), self.regions[1])
+            ans = self.add_quiet_zone(ans)
             m = np.array(ans, dtype='u1')
             m[m==0] = 9
             m[m==1] = 0
