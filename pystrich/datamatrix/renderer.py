@@ -16,7 +16,7 @@ class DataMatrixRenderer:
     it will add edge handles and render to either to an image
     (including quiet zone) or ascii printout"""
 
-    def __init__(self, matrix, regions=5):
+    def __init__(self, matrix, regions):
         self.width = len(matrix[0])
         self.height = len(matrix)
         self.regions = regions

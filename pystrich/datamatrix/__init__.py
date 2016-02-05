@@ -38,6 +38,7 @@ from __future__ import print_function
 __revision__ = "$Rev$"
 
 import numpy as np
+from PIL import Image
 
 try:
     from .textencoder import TextEncoder
@@ -58,6 +59,7 @@ class DataMatrixEncoder:
         """Set up the encoder with the input text.
         This will encode the text,
         and create a matrix with the resulting codewords"""
+        self.image = None
 
         enc = TextEncoder()
         self.codewords = enc.encode(text, sz=sz)
@@ -70,6 +72,21 @@ class DataMatrixEncoder:
 
         placer = DataMatrixPlacer()
         placer.place(self.codewords, self.matrix)
+
+    def image_from_encoder(self):
+        if self.regions == (1,2):
+            ans = encoder.add_margins(np.mat(self.matrix), self.regions[1])
+            ans = encoder.add_quiet_zone(ans)
+            m = np.array(ans, dtype='u1')
+            m[m==0] = 9
+            m[m==1] = 0
+            m[m==9] = 1
+            im = Image.fromarray(m*255)
+        else:
+            r = DataMatrixRenderer(self.matrix, self.regions[0])
+            im = r.get_pilimage(cellsize=1)
+
+        return im
 
     def save(self, filename, cellsize=5):
         """Write the matrix out to an image file"""
@@ -88,37 +105,41 @@ class DataMatrixEncoder:
         dmtx = DataMatrixRenderer(self.matrix, self.regions)
         return dmtx.get_ascii()
 
-def add_margins(matrix, regions=2):
-    nrow, ncol = np.shape(matrix)
-    print(nrow)
-    print(ncol)
+    def add_margins(self, matrix, regions=2):
+        nrow, ncol = np.shape(matrix)
 
-    assert regions<=2
-    for i in range(regions):
-        nc = ncol/regions
-        nr = nrow
+        assert regions<=2
+        for i in range(regions):
+            nc = ncol/regions
+            nr = nrow
 
-        if i==0:
-            m = matrix[:, 0:nc]
-        else:
-            m = matrix[:, nc:]
+            if i==0:
+                m = matrix[:, 0:nc]
+            else:
+                m = matrix[:, nc:]
 
-        left_col = np.ones((nr+2,1))
-        bottom_row = np.ones((1, nc))
-        top_row = np.reshape([[0,1] for _ in range(nc/2)], (1, nc))
-        right_row = np.reshape([[0,1] for _ in range(nr/2+1)], (nr+2, 1))
-        m = np.row_stack((top_row, m))
-        m = np.row_stack((m, bottom_row))
-        m = np.column_stack((left_col, m))
-        m = np.column_stack((m, right_row))
-        if i == 0:
-            ans = m
-        else:
-            ans = np.column_stack((ans, m))
-    return ans
+            left_col = np.ones((nr+2,1))
+            bottom_row = np.ones((1, nc))
+            top_row = np.reshape([[0,1] for _ in range(nc/2)], (1, nc))
+            right_row = np.reshape([[0,1] for _ in range(nr/2+1)], (nr+2, 1))
+            m = np.row_stack((top_row, m))
+            m = np.row_stack((m, bottom_row))
+            m = np.column_stack((left_col, m))
+            m = np.column_stack((m, right_row))
+            if i == 0:
+                ans = m
+            else:
+                ans = np.column_stack((ans, m))
+        return ans
+
+    def add_quiet_zone(self, matrix, quiet_zone=2):
+        nrow, ncol = np.shape(matrix)
+        new_matrix = np.zeros((nrow+quiet_zone*2, ncol+quiet_zone*2))
+        new_matrix[quiet_zone:-quiet_zone, quiet_zone:-quiet_zone] = matrix
+        return new_matrix
 
 if __name__=='__main__':
-    from PIL import Image
+
     sz = None
     test_string = 'wikipedia'
 #    test_string = 'what is question of the century? romeo must die. juliet should die also. lorem ipsum, a nods as good as a wink to a blind bat.'
@@ -126,13 +147,5 @@ if __name__=='__main__':
     encoder = DataMatrixEncoder(test_string)
 
     print(np.mat(encoder.matrix))
-
-    ans = add_margins(np.mat(encoder.matrix), encoder.regions[1])
-    print(ans)
-    m = np.array(ans, dtype='u1')
-    m[m==0] = 9
-    m[m==1] = 0
-    m[m==9] = 1
-    im = Image.fromarray(m*255)
+    im = encoder.image_from_encoder()
     im.show()
-

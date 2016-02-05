@@ -33,13 +33,15 @@ class DataMatrixPlacer:
         self.matrix[posx][posy] = bit
         #self.matrix[posx][posy] = cur
 
-        for row in self.matrix:
-            for v in row:
-                k = 99 if v is None else int(v)
-                print('{:02d}'.format(k), end=',')
+        debug = False
+        if debug:
+            for row in self.matrix:
+                for v in row:
+                    k = 99 if v is None else int(v)
+                    print('{:02d}'.format(k), end=',')
+                print()
             print()
-        print()
-        print('position', position, cur)
+            print('position', position, cur)
 
     def place_special_1(self, codeword):
         """Special corner case 1
@@ -204,10 +206,4 @@ class DataMatrixPlacer:
                 if row[i] is None:
                     row[i] = 0
 
-        for row in self.matrix:
-            for v in row:
-                k = 99 if v is None else int(v)
-                print('{:02d}'.format(k), end=',')
-            print()
-        print()
 
