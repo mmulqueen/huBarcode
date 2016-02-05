@@ -142,7 +142,6 @@ if __name__=='__main__':
 
     sz = None
     test_string = 'wikipedia'
-#    test_string = 'what is question of the century? romeo must die. juliet should die also. lorem ipsum, a nods as good as a wink to a blind bat.'
 
     encoder = DataMatrixEncoder(test_string)
 
