@@ -11,3 +11,5 @@ datamatrix-test.png
 pip-log.txt
 test.png
 testenv/
+venv/
+.idea/
