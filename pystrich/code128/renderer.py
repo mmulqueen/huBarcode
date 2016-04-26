@@ -30,7 +30,8 @@ class Code128Renderer:
             * label_border: number of pixels space between the barcode and the label
             * bottom_border: number of pixels space between the label and the bottom border
             * height: height of the image in pixels
-            * show_label: whether to show the label below the barcode (defaults to True) """
+            * show_label: whether to show the label below the barcode (dgit efaults to True)
+            * quiet_width_multiplier: size of the quiet width in units of bar width (default 10)"""
         self.options = options or {}
         self.bars = bars
         self.text = text
@@ -41,6 +42,7 @@ class Code128Renderer:
         """Return the barcode as a PIL object"""
 
         show_label = self.options.get('show_label', True)
+        quiet_width_muliplier = self.options.get('quiet_width_multiplier', 10)
 
         # 11 bars per character, plus the stop
         num_bars = len(self.bars)
@@ -48,7 +50,7 @@ class Code128Renderer:
         log.debug("There are %d bars", num_bars)
 
         # Quiet zone is 10 bar widths on each side
-        quiet_width = bar_width * 10
+        quiet_width = bar_width * quiet_width_muliplier
 
         fontsize = 0
         if show_label:
