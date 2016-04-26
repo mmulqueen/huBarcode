@@ -30,7 +30,7 @@ class Code128Renderer:
             * label_border: number of pixels space between the barcode and the label
             * bottom_border: number of pixels space between the label and the bottom border
             * height: height of the image in pixels
-            * show_label: whether to show the label below the barcode (dgit efaults to True)
+            * show_label: whether to show the label below the barcode (defaults to True)
             * quiet_width_multiplier: size of the quiet width in units of bar width (default 10)"""
         self.options = options or {}
         self.bars = bars
