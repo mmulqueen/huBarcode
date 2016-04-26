@@ -141,7 +141,6 @@ class DataMatrixEncoder:
 if __name__=='__main__':
 
     sz = None
-    test_string = 'wikipedia'
     test_string = 'abc'
 
     sz = (6, 16)
