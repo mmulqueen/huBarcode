@@ -76,5 +76,5 @@ class DataMatrixEncoder:
 
     def get_ascii(self):
         """Return an ascii representation of the matrix"""
-        dmtx = DataMatrixRenderer(self.matrix)
+        dmtx = DataMatrixRenderer(self.matrix, self.regions)
         return dmtx.get_ascii()
