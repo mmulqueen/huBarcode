@@ -3,6 +3,7 @@ pyStrich
 pyStrich is a Python module to generate 1D and 2D barcodes. Currently it
 supports
 
+ * code39
  * code128
  * ean13
  * datamatrix
@@ -27,6 +28,7 @@ print(encoder.get_ascii())
 Relevant imports are:
 
 ```python
+from pystrich.code39 import Code39Encoder
 from pystrich.code128 import Code128Encoder
 from pystrich.datamatrix import DataMatrixEncoder
 from pystrich.ean13 import EAN13Encoder
