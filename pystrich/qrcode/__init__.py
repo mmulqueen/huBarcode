@@ -50,3 +50,8 @@ class QRCodeEncoder:
         """Return an ascii representation of the matrix"""
         qrc = QRCodeRenderer(self.matrix)
         return qrc.get_ascii()
+
+    def get_dxf(self, cellsize=1.0, inverse=True, units="mm"):
+        """Return a DXF representation of the matrix"""
+        qrc = QRCodeRenderer(self.matrix)
+        return qrc.get_dxf(cellsize, inverse, units)

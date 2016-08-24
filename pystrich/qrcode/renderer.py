@@ -93,4 +93,37 @@ class QRCodeRenderer:
             ''.join([symbol(cell) for cell in row])
             for row in self.matrix]) + '\n'
     # end def get_ascii
+    
+    def get_dxf(self, cellsize, inverse, units):
+        """Write an DXF version of the matrix to a string"""
+        dxf = []
+        dxf.append("0\nSECTION\n2\nHEADER\n")
+        # AutoCAD drawing version number (AC1006 = R10, AC1009 = R11/R12, AC1012 = R13, AC1014 = R14)
+        dxf.append("9\n$ACADVER\n1\nAC1006\n")
+        # Default drawing units (1 = Inches; 2 = Feet; 3 = Miles; 4 = Millimeters; 5 = Centimeters; 6 = Meters)
+        dxf.append("9\n$INSUNITS\n70\n")
+        dxf.append("4\n" if units == "mm" else "0\n")
+        dxf.append("0\nENDSEC\n0\nSECTION\n2\nENTITIES\n")
+        
+        def coord(x,y,c):
+            # Group codes 10,11,12,13 are X1,X2,X3,X4 coordinates
+            # Group codes 20,21,22,23 are Y1,Y2,Y3,Y4 coordinates
+            # Group codes 30,31,32,33 are Z1,Z2,Z3,Z4 coordinates
+            return '\n'.join(map(str,(10+c, x, 20+c, y, 30+c, 0, '')))
+        def solid(x,y,w=cellsize,h=cellsize):
+            # calculate corner coordinates
+            cl = ((x,y,0), (x+w,y,1), (x,y-h,2), (x+w,y-h,3))
+            return "0\nSOLID\n8\nbarcode\n" + "".join( [coord(x,y,c) for x,y,c in cl] )
+        dxf.extend( [ ''.join([solid(x*cellsize, (self.mtx_size-y)*cellsize)
+                               if bool(val) != inverse else ''
+                              for x, val in enumerate(row)])
+                    for y, row in enumerate(self.matrix)] )
+        if inverse:
+            qz = 4 #quietzone
+            dxf.append(solid(-qz*cellsize, 0, self.mtx_size + 2 * qz * cellsize, qz*cellsize))
+            dxf.append(solid(-qz*cellsize, self.mtx_size+qz*cellsize, self.mtx_size + 2 * qz * cellsize, qz*cellsize))
+            dxf.append(solid(-qz*cellsize, self.mtx_size*cellsize, qz*cellsize, self.mtx_size*cellsize))
+            dxf.append(solid(self.mtx_size*cellsize, self.mtx_size*cellsize, qz*cellsize, self.mtx_size*cellsize))
+        dxf.append("0\nENDSEC\n0\nEOF\n")
+        return "".join(dxf)    
 # end class QRCodeRenderer

@@ -13,3 +13,5 @@ if __name__ == "__main__":
     ENCODER = QRCodeEncoder(sys.argv[1])
     ENCODER.save("test.png", 3)
     print(ENCODER.get_ascii())
+    with open("test.dxf", "w") as text_file:
+        text_file.write(ENCODER.get_dxf(inverse=False, cellsize=0.1))
