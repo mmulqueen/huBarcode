@@ -78,3 +78,9 @@ class DataMatrixEncoder:
         """Return an ascii representation of the matrix"""
         dmtx = DataMatrixRenderer(self.matrix, self.regions)
         return dmtx.get_ascii()
+
+    def get_dxf(self, cellsize=1.0, inverse=True, units="mm"):
+        """Return a DXF representation of the matrix"""
+        dmtx = DataMatrixRenderer(self.matrix, self.regions)
+        return dmtx.get_dxf(cellsize, inverse, units)
+        

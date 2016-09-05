@@ -14,3 +14,5 @@ if __name__ == "__main__":
     encoder = DataMatrixEncoder(sys.argv[1])
     encoder.save("test.png")
     print(encoder.get_ascii())
+    with open("test.dxf", "w") as text_file:
+        text_file.write(encoder.get_dxf(inverse=True, cellsize=0.1))
