@@ -12,3 +12,5 @@ pip-log.txt
 test.png
 test.dxf
 testenv/
+venv/
+.idea/
