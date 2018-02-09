@@ -7,7 +7,7 @@ supports
  * code128
  * ean13
  * datamatrix
- * qrcode
+ * qrcode - see [known issues](#known-issues)
 
 Available from PyPI: https://pypi.python.org/pypi/pyStrich
  
@@ -34,6 +34,18 @@ from pystrich.datamatrix import DataMatrixEncoder
 from pystrich.ean13 import EAN13Encoder
 from pystrich.qrcode import QRCodeEncoder
 ```
+
+Known Issues
+----------
+Code39, Code128 and DataMatrix support is considered by the maintainer to be good and they are known to be used in 
+production.
+
+The maintainer rarely uses EAN13 or QRCode support. You may wish to consider more actively maintained modules. 
+
+The maintainer has no plans to fix the following issues:
+
+* Some QR codes cause an exception to be thrown - root cause unknown - [see issue 8](https://github.com/mmulqueen/pyStrich/issues/8).
+* DataMatrix module only supports up to 174 characters or 348 digits of data - [see issue 2](https://github.com/mmulqueen/pyStrich/issues/2).
 
 Background
 ----------
