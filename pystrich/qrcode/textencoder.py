@@ -172,18 +172,14 @@ class TextEncoder:
             j = rs_data_codewords
             while j > 0:
                 first = rstemp[0]
-                if first != 0:
-                    rstemp = rstemp[1:]
-                    cal = self.minfo.rs_cal_table[first]
+                rstemp = rstemp[1:]
+                cal = self.minfo.rs_cal_table[first]
 
-                    if len(rstemp) < len(cal):
-                        rstemp, cal = cal, rstemp
-                    # end if
-                    cal += [0] * (len(rstemp) - len(cal))
-                    rstemp = [x1 ^ x2 for x1, x2 in zip(rstemp, cal)]
-                else:
-                    rstemp = rstemp[1:]
+                if len(rstemp) < len(cal):
+                    rstemp, cal = cal, rstemp
                 # end if
+                cal += [0] * (len(rstemp) - len(cal))
+                rstemp = [x1 ^ x2 for x1, x2 in zip(rstemp, cal)]
                 j -= 1
             # end while
             self.codewords += rstemp
