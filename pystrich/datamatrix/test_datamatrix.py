@@ -3,14 +3,20 @@
 __revision__ = "$Rev$"
 
 import unittest
-import os
-from distutils.spawn import find_executable
+from shutil import which
 import subprocess
 
 from pystrich.datamatrix import DataMatrixEncoder
 
-dmtxread_path = find_executable("dmtxread")
-dmtxwrite_path = find_executable("dmtxwrite")
+dmtxread_path = which("dmtxread")
+dmtxwrite_path = which("dmtxwrite")
+
+
+def dmtxread(datamatrix_path: str) -> str:
+    """Read a datamatrix barcode from an image file"""
+    if not dmtxread_path:
+        raise RuntimeError("dmtxread not found")
+    return subprocess.check_output([dmtxread_path, datamatrix_path]).decode()
 
 
 class MatrixTest(unittest.TestCase):
@@ -50,12 +56,7 @@ class MatrixTest(unittest.TestCase):
 
             encoder = DataMatrixEncoder(string)
             encoder.save("datamatrix-test.png")
-
-            if not dmtxread_path:
-                print("dmtxread is not installed or cannot be found - Debian package libdmtx-utils")
-            else:
-                fin = os.popen("sh -c '%s datamatrix-test.png'" % dmtxread_path)
-                self.assertEqual(fin.readline(), string)
+            self.assertEqual(dmtxread("datamatrix-test.png"), string)
 
     def test_encoding(self):
         """Test that text is correctly encoded, and also that padding
