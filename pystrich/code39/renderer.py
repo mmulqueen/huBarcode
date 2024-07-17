@@ -108,7 +108,7 @@ class Code39Renderer:
         # Draw the text
         draw = ImageDraw.Draw(img)
         if show_label:
-            xtextwidth = font.getsize(self.text)[0]
+            xtextwidth = font.getlength(self.text)
             xtextpos = self.image_width / 2 - (xtextwidth / 2)
             ytextpos = bar_height + label_border
             draw.text((xtextpos, ytextpos), self.text, font=font)
