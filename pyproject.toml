@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "pyStrich"
+version = "0.9"
+description = "PyStrich is a Python module to generate 1D and 2D barcodes (Code 39, Code 128, DataMatrix, QRCode and EAN13). Forked from huBarcode."
+authors = [
+    "Michael Mulqueen <mike@method-b.uk>"
+    # Previous authors not listed here. Refer to git log.
+]
+maintainers = [
+    "Michael Mulqueen <mike@method-b.uk>"
+]
+readme = "README.md"
+license = "Apache-2.0"
+include = [
+    "pystrich/fonts/*.pil",
+    "pystrich/fonts/*.pbm",
+    "pystrich/qrcode/qrcode_data/*.dat"
+]
+homepage = "https://github.com/mmulqueen/pyStrich"
+repository = "https://github.com/mmulqueen/pyStrich"
+keywords = [
+    "barcode",
+    "qrcode",
+    "datamatrix",
+    "ean13",
+    "code39",
+    "code128"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Office/Business"
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pillow = ">=10.3"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
